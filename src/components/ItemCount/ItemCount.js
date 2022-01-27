@@ -4,24 +4,21 @@ import { useState } from "react";
 
 const ItemCount = ({ initial, stock, onAdd }) => {
   const [contador, setContador] = useState(initial);
-  // // const [contadorDate, setContadorDate] = useState(Date());
 
   const handlerSuma = (valor) => {
     stock > contador
       ? setContador((prev) => prev + valor)
       : alert("NO HAY MAS ITEMS DISPONIBLES");
-    // setContadorDate(Date());
   };
 
   const handlerResta = (valor) => {
     initial < contador
       ? setContador((prev) => prev - valor)
       : alert("SELECCIONE AL MENOS UN ITEM");
-    // setContadorDate(Date());
   };
 
   return (
-    <div>
+    <>
       <ButtonGroup
         aria-label="Basic example"
         className="container-fluid border border-dark rounded my-2 p-0 d-flex align-items-center"
@@ -42,9 +39,7 @@ const ItemCount = ({ initial, stock, onAdd }) => {
       >
         Añadir al Carrito
       </Button>
-
-      {/* <p>{contadorDate}</p> */}
-    </div>
+    </>
   );
 };
 

@@ -20,30 +20,18 @@ const ItemListContainer = () => {
   useEffect(() => {
     const db = getFirestore();
 
-    if (idCategory) {
-      const queryCollection = query(
-        collection(db, "products"),
-        where("category", "==", idCategory)
-      );
-      getDocs(queryCollection)
-        .then((result) =>
-          setProducts(
-            result.docs.map((prod) => ({ id: prod.id, ...prod.data() }))
-          )
+    const queryCollection = idCategory
+      ? query(collection(db, "products"), where("category", "==", idCategory))
+      : query(collection(db, "products"));
+
+    getDocs(queryCollection)
+      .then((result) =>
+        setProducts(
+          result.docs.map((prod) => ({ id: prod.id, ...prod.data() }))
         )
-        .catch((error) => alert("Se ha producido un error", error))
-        .finally(() => setLoading(false));
-    } else {
-      const queryCollection = collection(db, "products");
-      getDocs(queryCollection)
-        .then((result) =>
-          setProducts(
-            result.docs.map((prod) => ({ id: prod.id, ...prod.data() }))
-          )
-        )
-        .catch((error) => alert("Se ha producido un error", error))
-        .finally(() => setLoading(false));
-    }
+      )
+      .catch((error) => alert("Se ha producido un error", error))
+      .finally(() => setLoading(false));
   }, [idCategory]);
 
   return (

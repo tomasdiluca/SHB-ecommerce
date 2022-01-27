@@ -1,19 +1,16 @@
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
 import CartWidget from "../CarWidget/CartWidget";
 import { Link } from "react-router-dom";
-// import Input from "../Input/Input";
-import ListGroup from "react-bootstrap/ListGroup";
 
 function NavBar() {
   return (
     <>
-      <Navbar bg="light" expand="lg">
-        <Container>
-          <div>
+      <Navbar bg="light" expand="lg" sticky="top">
+        <Container fluid>
+          <Col lg={3} xs={6}>
             <Link to="/">
               <Navbar.Brand>
                 <img
@@ -21,54 +18,62 @@ function NavBar() {
                   width="50"
                   height="50"
                   className="d-inline-block align-top"
-                  alt="React Bootstrap logo"
+                  alt="SBH logo"
                 />
               </Navbar.Brand>
             </Link>
-          </div>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          </Col>
+          <Col lg={(3, { order: "last" })}>
+            <CartWidget />
+          </Col>
+          <Col lg={6} xs={12}>
+            <Navbar.Toggle aria-controls="navbarScroll" />
+            <Navbar.Collapse id="navbarScroll">
+              <Nav
+                className="container-fluid d-flex justify-content-around my-2 "
+                navbarScroll
+              >
+                <Link to="/" className="text-decoration-none">
+                  <Nav.Item className="me-5 ms-1 my-1 text-secondary container-fluid">
+                    Inicio
+                  </Nav.Item>
+                </Link>
 
-          <Navbar.Collapse
-            className="container-fluid d-flex justify-content-center"
-            id="basic-navbar-nav"
-          >
-            <Nav>
-              <NavDropdown title="Categorias" id="basic-nav-dropdown">
                 <Link
                   to="/categoria/hogar-muebles-jardin"
                   className="text-decoration-none"
                 >
-                  <ListGroup.Item>Hogar, Muebles y Jardín</ListGroup.Item>
+                  <Nav.Item className="mx-1 my-1 text-secondary container-fluid">
+                    Hogar, Muebles y Jardín
+                  </Nav.Item>
                 </Link>
 
                 <Link
                   to="/categoria/electrodomesticos"
                   className="text-decoration-none"
                 >
-                  <ListGroup.Item> Electrodomésticos </ListGroup.Item>
+                  <Nav.Item className="mx-1 my-1 text-secondary container-fluid">
+                    Electrodomésticos
+                  </Nav.Item>
                 </Link>
 
                 <Link
                   to="/categoria/tecnologia"
                   className="text-decoration-none"
                 >
-                  <ListGroup.Item> Tecnología </ListGroup.Item>
+                  <Nav.Item className="mx-1 my-1 text-secondary container-fluid">
+                    Tecnología
+                  </Nav.Item>
                 </Link>
 
                 <Link to="/categoria/deportes" className="text-decoration-none">
-                  <ListGroup.Item> Deportes </ListGroup.Item>
+                  <Nav.Item className="mx-1 my-1 text-secondary container-fluid">
+                    Deportes
+                  </Nav.Item>
                 </Link>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
-
-          {/* <Input /> */}
-          <CartWidget />
-          <div className="ms-4">
-            <Button variant="outline-secondary" id="button-login">
-              Login
-            </Button>
-          </div>
+              </Nav>
+            </Navbar.Collapse>
+          </Col>
         </Container>
       </Navbar>
     </>

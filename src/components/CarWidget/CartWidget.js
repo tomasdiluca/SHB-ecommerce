@@ -17,7 +17,7 @@ const CartWidget = () => {
 
   return (
     <>
-      <Link to={"/cart/"}>
+      <Link to={"/cart/"}> 
         <span type="button" class="position-relative">
           <svg
             xmlns="http://www.w3.org/2000/svg"

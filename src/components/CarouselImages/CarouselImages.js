@@ -15,20 +15,20 @@ const CarouselImages = ({ image }) => {
       className="bg bg-secondary"
     >
       <Carousel.Item>
-        <img className="d-block" src={image} alt="Imagen 1" />
+        <img className="d-block w-100" src={image} alt="Imagen 1" />
         <Carousel.Caption>
           <h3>Imagen l</h3>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <img className="d-block" src={image} alt="Imagen 2" />
+        <img className="d-block w-100" src={image} alt="Imagen 2" />
 
         <Carousel.Caption>
           <h3>Imagen 2</h3>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <img className="d-block" src={image} alt="Imagen 3" />
+        <img className="d-block w-100" src={image} alt="Imagen 3" />
 
         <Carousel.Caption>
           <h3>Imagen 3</h3>

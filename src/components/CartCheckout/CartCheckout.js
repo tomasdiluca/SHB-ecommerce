@@ -1,17 +1,15 @@
 import { useContext, useState } from "react";
 import { CartContext } from "../Context/CartContext";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Alert from "react-bootstrap/Alert";
+import CartConfirmation from "../CartConfirmation/CartConfirmation";
+import CartCheckoutDetail from "../CartCheckoutDetail/CartCheckoutDetail";
 import {
   addDoc,
   collection,
   getFirestore,
   Timestamp,
 } from "firebase/firestore";
+import CartCheckoutForm from "../CartCheckoutForm/CartCheckoutForm";
 
 const CartCheckout = () => {
   const { totalCart, cartList } = useContext(CartContext);
@@ -22,9 +20,12 @@ const CartCheckout = () => {
     name: "",
     phone: "",
     email: "",
+    repeatEmail: "",
   });
 
   const [orderConfirmation, setOrderConfirmation] = useState(false);
+
+  const [confirmation, setConfirmation] = useState(true);
 
   const generarOrden = (event) => {
     event.preventDefault();
@@ -49,13 +50,31 @@ const CartCheckout = () => {
       return { id, title, price, quantity, subtotal };
     });
 
-    const db = getFirestore();
-    const orderCollection = collection(db, "orders");
-    addDoc(orderCollection, order)
-      .then((result) => setOrderId(result.id))
-      .catch((error) => alert("Se ha producido un error", error));
+    let validEmail = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
 
-    setOrderConfirmation(true);
+    if (order.items.length === 0) {
+      alert("Por favor agregue productos al cart para continuar");
+    } else if (
+      dataForm.name === "" ||
+      dataForm.phone === "" ||
+      dataForm.email === "" ||
+      dataForm.repeatEmail === ""
+    ) {
+      alert("Por favor complete todos los campos");
+    } else if (!validEmail.test(dataForm.email)) {
+      alert("Ingrese un formato de email correcto");
+    } else if (dataForm.repeatEmail !== dataForm.email) {
+      alert("Los correos electronicos no coinciden");
+    } else {
+      const db = getFirestore();
+      const orderCollection = collection(db, "orders");
+      addDoc(orderCollection, order)
+        .then((result) => setOrderId(result.id))
+        .catch((error) => alert("Se ha producido un error", error))
+        .finally(() => setConfirmation(false));
+
+      setOrderConfirmation(true);
+    }
   };
 
   const handleChange = (event) => {
@@ -68,98 +87,19 @@ const CartCheckout = () => {
   return (
     <>
       <Container>
-        {cartList.map((itCart) => (
-          <div
-            key={itCart.id}
-            className="border-top shadow p-3 mt-3 bg-body rounded"
-          >
-            <Row>
-              <Col>
-                <p> {itCart.name} </p>
-              </Col>
-              <Col>
-                <p>Cantidad: {itCart.quantity}</p>
-              </Col>
-              <Col>
-                <p> Precio Unitario: USD {itCart.price}</p>
-              </Col>
-              <Col>
-                <p className="text-end">
-                  Subtotal: USD {itCart.quantity * itCart.price}
-                </p>
-              </Col>
-            </Row>
-          </div>
-        ))}
-        <Row>
-          <Col>
-            <div className="mt-3 text-end fs-3">
-              <p>Total: USD {totalCart}</p>
-            </div>
-          </Col>
-        </Row>
-
+        <CartCheckoutDetail />
         {orderConfirmation ? (
-          <Row>
-            <Col>
-              <Alert variant="success">
-                <Alert.Heading>¡Hola {dataForm.name}!</Alert.Heading>
-                <p>¡Su numero de orden se ha generado con exito!</p>
-                <p className="fs-4">Numero de Orden: {orderId}</p>
-              </Alert>
-            </Col>
-          </Row>
+          <CartConfirmation
+            dataFormName={dataForm.name}
+            orderId={orderId}
+            confirmation={confirmation}
+          />
         ) : (
-          <Row>
-            <Form
-              onChange={handleChange}
-              className="border-top shadow p-3 mt-3 bg-body rounded"
-            >
-              <Row>
-                <Col>
-                  <p className="text-start fs-5">
-                    Ingrese sus datos y genere la orden
-                  </p>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col>
-                  <Form.Control
-                    type="text"
-                    name="name"
-                    placeholder="Nombre y Apellido.."
-                    value={dataForm.name}
-                  />
-                </Col>
-                <Col>
-                  <Form.Control
-                    type="text"
-                    name="phone"
-                    placeholder="Teléfono.."
-                    value={dataForm.phone}
-                  />
-                </Col>
-                <Col>
-                  <Form.Control
-                    type="email"
-                    name="email"
-                    placeholder="Email.."
-                    value={dataForm.email}
-                  />
-                </Col>
-                <Col>
-                  <Button
-                    variant="success"
-                    type="submit"
-                    onClick={generarOrden}
-                  >
-                    Generar orden
-                  </Button>
-                </Col>
-              </Row>
-            </Form>
-          </Row>
+          <CartCheckoutForm
+            generarOrden={generarOrden}
+            handleChange={handleChange}
+            dataForm={dataForm}
+          />
         )}
       </Container>
     </>

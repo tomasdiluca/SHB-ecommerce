@@ -7,10 +7,9 @@ const CartControls = () => {
   const { emptyCart, totalCart } = useContext(CartContext);
 
   return (
-    <div>
-      <div>
-        <p className="fs-4">Total: USD {totalCart} </p>
-      </div>
+    <>
+      <p className="fs-4 fw-bold mt-2">TOTAL: USD {totalCart} </p>
+
       <Link to="/cart/checkout/">
         <Button className="btn btn-success container-fluid mb-2">
           Finalizar Compra
@@ -27,7 +26,7 @@ const CartControls = () => {
       >
         Vaciar Carrito
       </Button>
-    </div>
+    </>
   );
 };
 

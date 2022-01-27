@@ -20,17 +20,6 @@ const ItemDetailContainer = () => {
       .finally(() => setLoading(false));
   }, [idDetail]);
 
-  // useEffect(() => {
-  //   getFetch
-  //     .then((result) => {
-  //       setItem(result.filter((prod) => prod.id === parseInt(idDetail)));
-  //       setLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       alert("Se ha producido un error", error);
-  //     });
-  // }, [idDetail]);
-
   return <>{loading ? <Loading /> : <ItemDetail item={item} />}</>;
 };
 

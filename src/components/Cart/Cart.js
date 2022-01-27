@@ -12,24 +12,13 @@ const Cart = () => {
   const [noItems, setNoItems] = useState(true);
 
   useEffect(() => {
-    if (cartList.length === 0) {
-      setNoItems(true);
-    } else {
-      setNoItems(false);
-    }
+    cartList.length !== 0 ? setNoItems(true) : setNoItems(false);
   }, [cartList.length]);
 
   return (
     <>
       <Container>
         {noItems ? (
-          <div className="mt-5">
-            <p className="fs-1">El carrito está vacío</p>
-            <Link to="/">
-              <Button className="btn btn-primary  mt-2">Volver a inicio</Button>
-            </Link>
-          </div>
-        ) : (
           <Row>
             <Col sm={9}>
               <CartDetail />
@@ -38,6 +27,13 @@ const Cart = () => {
               <CartControls />
             </Col>
           </Row>
+        ) : (
+          <div className="mt-5">
+            <p className="fs-1">El carrito está vacío</p>
+            <Link to="/">
+              <Button className="btn btn-primary  mt-2">Volver a inicio</Button>
+            </Link>
+          </div>
         )}
       </Container>
     </>
